@@ -16,16 +16,24 @@
 #
 .section .data
 .section .text
+
+	# create a macro called RETURN
+	# with a single parameter toRet
+	.macro RETURN toRet
+	
+	# 1 is the linux system call for exiting a program
+	movl $1, %eax
+	
+	# ebx is where we store the return code
+	movl $\toRet, %ebx
+	
+	# this wakes up the kernel to run the exit command
+	int $0x80
+	
+	# end the macro
+	.endm
+	
 .globl _start
 
 _start:
-	movl $1, %eax	# this is the linux kernel command
-			# number (system call) for exiting
-			# a program
-	movl $0, %ebx 	# this is the status number we will
-			# return to the operating system.
-			# Change this around and it will
-			# return different things to
-			# echo $?
-	int $0x80 	# this wakes up the kernel to run
-			# the exit command
+	RETURN 0
