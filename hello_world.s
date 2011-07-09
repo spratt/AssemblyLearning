@@ -1,20 +1,23 @@
-# PURPOSE: Simple program that exits and returns a
-# status code back to the Linux kernel
+# PURPOSE: 	Simple program that exits and returns a
+# 		status code back to the Linux kernel
 #
-# INPUT: none
+# INPUT: 	none
 #
-# OUTPUT: returns a status code. This can be viewed
-# by typing
+# OUTPUT: 	returns a status code. This can be viewed
+# 	  	by typing
 #
-# echo $?
+#  			echo $?
 #
-# after running the program
+# 	  	after running the program
 #
-#VARIABLES:
-# %eax holds the system call number
-# %ebx holds the return status
+# VARIABLES:
+#  		%eax holds the system call number
+#  		%ebx holds the return status
 #
+
 .section .data
+
+# this section stores code
 .section .text
 
 	# create a macro called RETURN
@@ -25,15 +28,18 @@
 	movl $1, %eax
 	
 	# ebx is where we store the return code
-	movl $\toRet, %ebx
+	movl \toRet, %ebx
 	
 	# this wakes up the kernel to run the exit command
 	int $0x80
 	
 	# end the macro
 	.endm
-	
+
+# don't discard this symbol after assembly
 .globl _start
 
+# _start is the beginning of the program
 _start:
-	RETURN 0
+	# use the macro to end the program
+	RETURN $0
